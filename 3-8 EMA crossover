@@ -1,0 +1,22 @@
+//@version=4
+study("EMA Crossover Alerts", shorttitle="EMA Crossover", overlay=true)
+
+// Define study inputs
+fast_length = input(title="Fast Length", type=input.integer, defval=3)
+slow_length = input(title="Slow Length", type=input.integer, defval=8)
+
+// Calculate EMAs
+fast_ema = ema(close, fast_length)
+slow_ema = ema(close, slow_length)
+
+// Generate buy and sell signals
+buy_signal = crossover(fast_ema, slow_ema)
+sell_signal = crossunder(fast_ema, slow_ema)
+
+// Plot EMAs
+plot(fast_ema, color=color.green)
+plot(slow_ema, color=color.red)
+
+// Alert conditions
+alertcondition(buy_signal, title="Buy Signal", message="Buy Signal: {ticker} - 3 EMA crossed above 8 EMA")
+alertcondition(sell_signal, title="Sell Signal", message="Sell Signal: {ticker} - 3 EMA crossed below 8 EMA")
